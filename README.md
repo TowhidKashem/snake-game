@@ -2,7 +2,7 @@
 
 [DEMO](https://towhidkashem.github.io/snake-game/)
 
-Note: this was built and only tested on the latest version of Chrome on a Windows 10 desktop.
+Note: this was built and only tested on the latest version of Chrome on a Windows 10 desktop. Also the project doesn't have any external dependencies, the package.json and node_modules is for enabling support for publishing to github pages where the demo is hosted.
 
 I got a little too into the project and ended up spending longer than the suggested 3 hours. Having never made a game before or worked with the Canvas API it was an interesting project for me.
 
