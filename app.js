@@ -3,6 +3,7 @@ class SnakeGame {
     this.$app = document.querySelector('#app');
     this.$canvas = this.$app.querySelector('canvas');
     this.ctx = this.$canvas.getContext('2d');
+    this.$startScreen = this.$app.querySelector('.start-screen');
     this.$score = this.$app.querySelector('.score');
 
     this.settings = {
@@ -20,9 +21,9 @@ class SnakeGame {
     };
 
     this.game = {
-      score: 0,
+      // "direction" (set in setUpGame())
+      // "score" (set in setUpGame())
       speed: 200,
-      direction: 'right',
       keyCodes: {
         38: 'up',
         40: 'down',
@@ -31,6 +32,34 @@ class SnakeGame {
       }  
     };
 
+    this.setUpGame();
+
+    this.init();
+  }
+
+  init() {
+    // Choose difficulty
+    // Rather than using "this.$startScreen.querySelectorAll('button')" and looping over the node list
+    // and attaching seperate event listeners on each item, it's more efficient to just listen in on the container and run a check at runtime
+    this.$startScreen.querySelector('.options').addEventListener('click', event => {
+      this.chooseDifficulty(event.target.dataset.difficulty);
+    });
+
+    // Play
+    this.$startScreen.querySelector('.play-btn').addEventListener('click', () => {
+      this.startGame();
+    });
+  }
+
+  chooseDifficulty(difficulty) {
+    if(difficulty) {
+      this.game.speed = difficulty;
+      this.$startScreen.querySelectorAll('.options button').forEach(btn => btn.classList.remove('active'));
+      event.target.classList.add('active');
+    }
+  }
+
+  setUpGame() {
     // The snake starts off with 5 pieces
     // Each piece is 30x30 pixels
     // Each following piece must be n times as far from the first piece
@@ -53,18 +82,22 @@ class SnakeGame {
       }
     };
 
-    this.init();
+    this.game.score = 0;
+    this.game.direction = 'right';
   }
 
-  init() {
+  startGame() {
+    this.$app.classList.add('game-in-progress');
+    this.$app.classList.remove('game-over');
+    this.$score.innerText = 0;
+
     this.generateSnake();
 
-    // Start the game
-    const startGame = setInterval(() => {
+    this.startGameInterval = setInterval(() => {
       if(!this.detectCollision()) {
         this.generateSnake();
       } else {
-        clearInterval(startGame);
+        this.endGame();
       }
     }, this.game.speed);
 
@@ -90,7 +123,7 @@ class SnakeGame {
       (keyPress === 'down' && currentDirection !== 'up');
   }
 
-  setResetCanvas() {
+  resetCanvas() {
     // Full screen size
     this.$canvas.width = this.settings.canvas.width;
     this.$canvas.height = this.settings.canvas.height;
@@ -98,19 +131,6 @@ class SnakeGame {
     // Background
     this.ctx.fillStyle = this.settings.canvas.background;
     this.ctx.fillRect(0, 0, this.$canvas.width, this.$canvas.height);
-  }
-
-  drawSnake() {
-    const size = this.settings.snake.size;
-
-    this.ctx.fillStyle = this.settings.snake.background;
-    this.ctx.strokestyle = this.settings.snake.border;
-
-    // Draw each piece
-    this.snake.forEach(coordinate => {
-      this.ctx.fillRect(coordinate.x, coordinate.y, size, size);
-      this.ctx.strokeRect(coordinate.x, coordinate.y, size, size);
-    });
   }
 
   generateSnake() {
@@ -145,7 +165,7 @@ class SnakeGame {
     // The snake moves by adding a piece to the beginning "this.snake.unshift(coordinate)" and removing the last piece "this.snake.pop()"
     // Except when it eats the food in which case there is no need to remove a piece and the added piece will make it grow
     this.snake.unshift(coordinate);
-    this.setResetCanvas();
+    this.resetCanvas();
 
     const ateFood = this.snake[0].x === this.food.coordinates.x && this.snake[0].y === this.food.coordinates.y;
 
@@ -159,6 +179,19 @@ class SnakeGame {
 
     this.generateFood();
     this.drawSnake();
+  }
+
+  drawSnake() {
+    const size = this.settings.snake.size;
+
+    this.ctx.fillStyle = this.settings.snake.background;
+    this.ctx.strokestyle = this.settings.snake.border;
+
+    // Draw each piece
+    this.snake.forEach(coordinate => {
+      this.ctx.fillRect(coordinate.x, coordinate.y, size, size);
+      this.ctx.strokeRect(coordinate.x, coordinate.y, size, size);
+    });
   }
 
   generateFood() {
@@ -181,7 +214,6 @@ class SnakeGame {
       const foodSnakeConflict = coordinate.x == x && coordinate.y == y;
 
       if(foodSnakeConflict) {
-        alert('conflict!');
         this.generateFood();
       } else {
         this.drawFood(x, y);
@@ -221,6 +253,15 @@ class SnakeGame {
     const bottomCollison = this.snake[0].y > this.$canvas.height - this.settings.snake.size;
 
     return leftCollison || topCollison || rightCollison || bottomCollison;
+  }
+
+  endGame() {
+    clearInterval(this.startGameInterval);
+    this.$app.classList.remove('game-in-progress');
+    this.$app.classList.add('game-over');
+    this.$startScreen.querySelector('.options h3').innerText = 'Game Over';
+    this.$startScreen.querySelector('.options .end-score').innerText = `Score: ${this.game.score}`;
+    this.setUpGame();
   }
 }
 

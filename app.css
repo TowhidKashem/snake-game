@@ -1,5 +1,3 @@
-@import "https://cdnjs.cloudflare.com/ajax/libs/normalize/8.0.0/normalize.min.css";
-
 html {
   box-sizing: border-box;
 }
@@ -13,6 +11,9 @@ html {
 body {
   font: normal 15px 'Press Start 2P', cursive;
   overflow: hidden;
+  color: #2B331B;
+  background: #A2C359;
+  user-select: none;
 }
 
 a {
@@ -23,15 +24,176 @@ a {
   text-align: center;
 }
 
-.app canvas {
-  /* box-shadow: inset 0 0 18px red; */
-}
-
 .app .score {
+  display: none;
   position: fixed;
   bottom: 0;
   right: 0;
-  font-size: 45px;
+  font-size: 65px;
+  padding: 20px;
+}
+
+.app .start-screen {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 600px;
+  height: 350px;
+  margin: -175px 0 0 -300px;
   padding: 25px;
-  background: rgba(0,0,0,0.5);
+  background: #73854A;
+  border: 5px solid #2B331B;
+  z-index: 1;
+}
+
+.app .start-screen h2 {
+  font-size: 50px;
+  margin: 0;
+}
+
+.app .start-screen button {
+  border: 3px solid #2B331B;
+  background: none;
+  cursor: pointer;
+  color: inherit;
+  outline: 0;
+}
+
+.app .start-screen button:hover,
+.app .start-screen button.active {
+  background: #2B331B;
+  color: #728744;
+}
+
+.app .start-screen .options {
+  margin-bottom: 40px;
+}
+
+.app .start-screen .options h3 {
+  margin-bottom: 25px;
+}
+
+.app .start-screen .play-btn {
+  font-size: 40px;
+  padding: 5px 20px;
+  text-transform: uppercase
+}
+
+/* Game In Progress */
+.app.game-in-progress .score {
+  display: block;
+}
+
+.app.game-in-progress .start-screen {
+  display: none;
+}
+
+/* Game Over */
+.app.game-over canvas {
+  opacity: 0.3;
+}
+
+/* @Credit: https://github.com/daneden/animate.css/ */
+.animated {
+  -webkit-animation-duration: 1s;
+  animation-duration: 1s;
+  -webkit-animation-fill-mode: both;
+  animation-fill-mode: both;
+}
+
+@-webkit-keyframes bounceIn {
+  from,
+  20%,
+  40%,
+  60%,
+  80%,
+  to {
+    -webkit-animation-timing-function: cubic-bezier(0.215, 0.61, 0.355, 1);
+    animation-timing-function: cubic-bezier(0.215, 0.61, 0.355, 1);
+  }
+
+  0% {
+    opacity: 0;
+    -webkit-transform: scale3d(0.3, 0.3, 0.3);
+    transform: scale3d(0.3, 0.3, 0.3);
+  }
+
+  20% {
+    -webkit-transform: scale3d(1.1, 1.1, 1.1);
+    transform: scale3d(1.1, 1.1, 1.1);
+  }
+
+  40% {
+    -webkit-transform: scale3d(0.9, 0.9, 0.9);
+    transform: scale3d(0.9, 0.9, 0.9);
+  }
+
+  60% {
+    opacity: 1;
+    -webkit-transform: scale3d(1.03, 1.03, 1.03);
+    transform: scale3d(1.03, 1.03, 1.03);
+  }
+
+  80% {
+    -webkit-transform: scale3d(0.97, 0.97, 0.97);
+    transform: scale3d(0.97, 0.97, 0.97);
+  }
+
+  to {
+    opacity: 1;
+    -webkit-transform: scale3d(1, 1, 1);
+    transform: scale3d(1, 1, 1);
+  }
+}
+
+@keyframes bounceIn {
+  from,
+  20%,
+  40%,
+  60%,
+  80%,
+  to {
+    -webkit-animation-timing-function: cubic-bezier(0.215, 0.61, 0.355, 1);
+    animation-timing-function: cubic-bezier(0.215, 0.61, 0.355, 1);
+  }
+
+  0% {
+    opacity: 0;
+    -webkit-transform: scale3d(0.3, 0.3, 0.3);
+    transform: scale3d(0.3, 0.3, 0.3);
+  }
+
+  20% {
+    -webkit-transform: scale3d(1.1, 1.1, 1.1);
+    transform: scale3d(1.1, 1.1, 1.1);
+  }
+
+  40% {
+    -webkit-transform: scale3d(0.9, 0.9, 0.9);
+    transform: scale3d(0.9, 0.9, 0.9);
+  }
+
+  60% {
+    opacity: 1;
+    -webkit-transform: scale3d(1.03, 1.03, 1.03);
+    transform: scale3d(1.03, 1.03, 1.03);
+  }
+
+  80% {
+    -webkit-transform: scale3d(0.97, 0.97, 0.97);
+    transform: scale3d(0.97, 0.97, 0.97);
+  }
+
+  to {
+    opacity: 1;
+    -webkit-transform: scale3d(1, 1, 1);
+    transform: scale3d(1, 1, 1);
+  }
+}
+
+.bounceIn {
+  -webkit-animation-duration: 0.75s;
+  animation-duration: 0.75s;
+  -webkit-animation-name: bounceIn;
+  animation-name: bounceIn;
 }

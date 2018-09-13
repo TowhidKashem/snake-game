@@ -15,14 +15,32 @@
 
     <title>🐍</title>
 
+    <!-- Won't have to worry about so many http requests in an actual app where we would be bundling on build -->
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Press+Start+2P">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/8.0.0/normalize.min.css">
     <link rel="stylesheet" href="./app.css">
   </head>
   <body>
     <div id="app" class="app">
+      <div class="start-screen animated bounceIn">
+        <h2>🐍</h2>
+
+        <div class="options">
+          <h3>Choose Difficulty</h3>
+          <p class="end-score"></p>
+          <button data-difficulty="180" class="active">Easy</button>
+          <button data-difficulty="100">Medium</button>
+          <button data-difficulty="50">Hard</button>
+        </div>
+
+        <button class="play-btn">Play</button>
+      </div>
+
       <canvas></canvas>
+
       <div class="score">0</div>
     </div>
-    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Press+Start+2P">
+
     <script src="./app.js"></script>
   </body>
 </html>
