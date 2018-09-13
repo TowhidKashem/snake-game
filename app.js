@@ -15,8 +15,8 @@ class SnakeGame {
       },
       snake: {
         size: 30,
-        background: 'red',
-        border: 'black'
+        background: '#73854A',
+        border: '#000'
       }
     };
 
@@ -32,8 +32,14 @@ class SnakeGame {
       }  
     };
 
-    this.setUpGame();
+    this.soundEffects = {
+      score: new Audio('./sounds/score.mp3'),
+      gameOver: new Audio('./sounds/game-over.mp3')
+    };
 
+    this.audioScore = new Audio('./sounds/score.mp3');
+
+    this.setUpGame();
     this.init();
   }
 
@@ -76,6 +82,8 @@ class SnakeGame {
 
     this.food = {
       active: false,
+      background: '#EC5E0B',
+      border: '#73AA24',
       coordinates: {
         x: 0,
         y: 0  
@@ -87,6 +95,11 @@ class SnakeGame {
   }
 
   startGame() {
+    // Stop the game over sound effect if a new game was restarted quickly before it could end
+    this.soundEffects.gameOver.pause();
+    this.soundEffects.gameOver.currentTime = 0;
+
+    // Reset a few things from the prior game
     this.$app.classList.add('game-in-progress');
     this.$app.classList.remove('game-over');
     this.$score.innerText = 0;
@@ -173,6 +186,7 @@ class SnakeGame {
       this.food.active = false;
       this.game.score += 10;
       this.$score.innerText = this.game.score;
+      this.soundEffects.score.play();
     } else {
       this.snake.pop();
     }
@@ -224,8 +238,8 @@ class SnakeGame {
   drawFood(x, y) {
     const size = this.settings.snake.size;
 
-    this.ctx.fillStyle = this.settings.snake.background;
-    this.ctx.strokestyle = this.settings.snake.border;
+    this.ctx.fillStyle = this.food.background;
+    this.ctx.strokestyle = this.food.border;
 
     this.ctx.fillRect(x, y, size, size);
     this.ctx.strokeRect(x, y, size, size);
@@ -256,11 +270,15 @@ class SnakeGame {
   }
 
   endGame() {
+    this.soundEffects.gameOver.play();
+
     clearInterval(this.startGameInterval);
+
     this.$app.classList.remove('game-in-progress');
     this.$app.classList.add('game-over');
     this.$startScreen.querySelector('.options h3').innerText = 'Game Over';
     this.$startScreen.querySelector('.options .end-score').innerText = `Score: ${this.game.score}`;
+
     this.setUpGame();
   }
 }
