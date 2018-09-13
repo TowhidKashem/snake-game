@@ -29,7 +29,7 @@ class SnakeGame {
         39: 'right',
         37: 'left'
       }  
-    }
+    };
 
     // The snake starts off with 5 pieces
     // Each piece is 30x30 pixels
@@ -37,7 +37,7 @@ class SnakeGame {
     const x = 300;
     const y = 300;
 
-    this.coordinates = [
+    this.snake = [
       { x: x, y: y },
       { x: x - this.settings.snake.size, y: y },
       { x: x - (this.settings.snake.size * 2), y: y },
@@ -57,9 +57,15 @@ class SnakeGame {
   }
 
   init() {
+    this.generateSnake();
+
     // Start the game
-    setInterval(() => {
-      this.generateSnake();
+    const startGame = setInterval(() => {
+      if(!this.detectCollision()) {
+        this.generateSnake();
+      } else {
+        clearInterval(startGame);
+      }
     }, this.game.speed);
 
     // Change direction
@@ -101,7 +107,7 @@ class SnakeGame {
     this.ctx.strokestyle = this.settings.snake.border;
 
     // Draw each piece
-    this.coordinates.forEach(coordinate => {
+    this.snake.forEach(coordinate => {
       this.ctx.fillRect(coordinate.x, coordinate.y, size, size);
       this.ctx.strokeRect(coordinate.x, coordinate.y, size, size);
     });
@@ -113,40 +119,42 @@ class SnakeGame {
     switch(this.game.direction) {
       case 'right':
         coordinate = {
-          x: this.coordinates[0].x + this.settings.snake.size,
-          y: this.coordinates[0].y
+          x: this.snake[0].x + this.settings.snake.size,
+          y: this.snake[0].y
         };
       break;
       case 'up':
         coordinate = {
-          x: this.coordinates[0].x,
-          y: this.coordinates[0].y - this.settings.snake.size
+          x: this.snake[0].x,
+          y: this.snake[0].y - this.settings.snake.size
         };
       break;
       case 'left':
         coordinate = {
-          x: this.coordinates[0].x - this.settings.snake.size,
-          y: this.coordinates[0].y
+          x: this.snake[0].x - this.settings.snake.size,
+          y: this.snake[0].y
         };
       break;
       case 'down':
         coordinate = {
-          x: this.coordinates[0].x,
-          y: this.coordinates[0].y + this.settings.snake.size
+          x: this.snake[0].x,
+          y: this.snake[0].y + this.settings.snake.size
         };
     }
 
-    this.coordinates.unshift(coordinate);
+    // The snake moves by adding a piece to the beginning "this.snake.unshift(coordinate)" and removing the last piece "this.snake.pop()"
+    // Except when it eats the food in which case there is no need to remove a piece and the added piece will make it grow
+    this.snake.unshift(coordinate);
     this.setResetCanvas();
 
-    const ateFood = this.coordinates[0].x === this.food.coordinates.x && this.coordinates[0].y === this.food.coordinates.y;
+    const ateFood = this.snake[0].x === this.food.coordinates.x && this.snake[0].y === this.food.coordinates.y;
 
     if(ateFood) {
       this.food.active = false;
       this.game.score += 10;
       this.$score.innerText = this.game.score;
     } else {
-      this.coordinates.pop();
+      this.snake.pop();
     }
 
     this.generateFood();
@@ -160,16 +168,16 @@ class SnakeGame {
       return;
     }
 
-    const grid = this.settings.snake.size;
-    const xMax = this.settings.canvas.width - grid;
-    const yMax = this.settings.canvas.height - grid;
+    const gridSize = this.settings.snake.size;
+    const xMax = this.settings.canvas.width - gridSize;
+    const yMax = this.settings.canvas.height - gridSize;
 
-    const x = Math.round((Math.random() * xMax) / grid) * grid;
-    const y = Math.round((Math.random() * yMax) / grid) * grid;
+    const x = Math.round((Math.random() * xMax) / gridSize) * gridSize;
+    const y = Math.round((Math.random() * yMax) / gridSize) * gridSize;
 
     // Make sure the generated coordinates do not conflict with the snake's present location
     // If so recall this method recursively to try again
-    this.coordinates.forEach(coordinate => {
+    this.snake.forEach(coordinate => {
       const foodSnakeConflict = coordinate.x == x && coordinate.y == y;
 
       if(foodSnakeConflict) {
@@ -193,6 +201,26 @@ class SnakeGame {
     this.food.active = true;
     this.food.coordinates.x = x;
     this.food.coordinates.y = y;
+  }
+
+  detectCollision() {
+    // Self collison
+    // It's impossible for the first 3 pieces of the snake to self collide so the loop starts at 4
+    for(let i = 4; i < this.snake.length; i++) {
+      const selfCollison = this.snake[i].x === this.snake[0].x && this.snake[i].y === this.snake[0].y;
+
+      if(selfCollison) {
+        return true;
+      }
+    }
+
+    // Wall collison
+    const leftCollison = this.snake[0].x < 0;
+    const topCollison = this.snake[0].y < 0;
+    const rightCollison = this.snake[0].x > this.$canvas.width - this.settings.snake.size;
+    const bottomCollison = this.snake[0].y > this.$canvas.height - this.settings.snake.size;
+
+    return leftCollison || topCollison || rightCollison || bottomCollison;
   }
 }
 
