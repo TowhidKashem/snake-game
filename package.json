@@ -1,0 +1,24 @@
+{
+  "name": "snake-game",
+  "version": "1.0.0",
+  "description": "Classic snake game built in vanilla JavaScript using the Canvas API",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "predeploy": "npm run build",
+    "deploy": "gh-pages -d build"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/TowhidKashem/snake-game.git"
+  },
+  "author": "Towhid Kashem",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/TowhidKashem/snake-game/issues"
+  },
+  "homepage": "https://towhidkashem.github.io/snake-game",
+  "devDependencies": {
+    "gh-pages": "^1.2.0"
+  }
+}
