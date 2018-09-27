@@ -1,6 +1,8 @@
 # Snake Game in Vanilla JavaScript
 
-[DEMO](https://towhidkashem.github.io/snake-game/)
+![alt text](https://raw.githubusercontent.com/TowhidKashem/snake-game/master/preview.gif)
+
+### [**DEMO**](https://towhidkashem.github.io/snake-game/)
 
 Note: this was built and only tested on the latest version of Chrome on a Windows 10 desktop. Also the project doesn't have any external dependencies, the package.json and node_modules is for enabling support for publishing to github pages where the demo is hosted.
 
