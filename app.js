@@ -23,7 +23,7 @@ class SnakeGame {
     this.game = {
       // "direction" (set in setUpGame())
       // "score" (set in setUpGame())
-      speed: 200,
+      speed: 100,
       keyCodes: {
         38: 'up',
         40: 'down',
@@ -36,8 +36,6 @@ class SnakeGame {
       score: new Audio('./sounds/score.mp3'),
       gameOver: new Audio('./sounds/game-over.mp3')
     };
-
-    this.audioScore = new Audio('./sounds/score.mp3');
 
     this.setUpGame();
     this.init();

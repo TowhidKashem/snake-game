@@ -1,46 +1,36 @@
 <!doctype html>
 <html lang="en">
-  <head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <meta name="mobile-web-app-capable" content="yes">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-title" content="Snake Game">
+  <title>🐍</title>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Press+Start+2P">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/8.0.0/normalize.min.css">
+  <link rel="stylesheet" href="./app.css">
+</head>
+<body>
+  <div id="app" class="app">
+    <div class="start-screen animated bounceIn">
+      <h2>🐍</h2>
 
-    <meta name="apple-mobile-web-app-title" content="Snake Game">
-    <link rel="apple-touch-icon" sizes="120x120" href="/icon-120x120.png">
-    <link rel="apple-touch-icon" sizes="152x152" href="/icon-152x152.png">
-    <link rel="apple-touch-icon" sizes="167x167" href="/icon-167x167.png">
-    <link rel="apple-touch-icon" sizes="180x180" href="/icon-180x180.png">
-
-    <link rel="icon" href="/favicon.ico">
-
-    <title>🐍</title>
-
-    <!-- Won't have to worry about so many http requests in an actual app where we would be bundling on build -->
-    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Press+Start+2P">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/8.0.0/normalize.min.css">
-    <link rel="stylesheet" href="./app.css">
-  </head>
-  <body>
-    <div id="app" class="app">
-      <div class="start-screen animated bounceIn">
-        <h2>🐍</h2>
-
-        <div class="options">
-          <h3>Choose Difficulty</h3>
-          <p class="end-score"></p>
-          <button data-difficulty="180" class="active">Easy</button>
-          <button data-difficulty="100">Medium</button>
-          <button data-difficulty="50">Hard</button>
-        </div>
-
-        <button class="play-btn">Play</button>
+      <div class="options">
+        <h3>Choose Difficulty</h3>
+        <p class="end-score"></p>
+        <button data-difficulty="100" class="active">Easy</button>
+        <button data-difficulty="75">Medium</button>
+        <button data-difficulty="50">Hard</button>
       </div>
 
-      <canvas></canvas>
-
-      <div class="score">0</div>
+      <button class="play-btn">Play</button>
     </div>
 
-    <script src="./app.js"></script>
-  </body>
+    <canvas></canvas>
+
+    <div class="score">0</div>
+  </div>
+
+  <script src="./app.js"></script>
+</body>
 </html>
