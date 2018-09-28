@@ -22,6 +22,7 @@ class SnakeGame {
 
     this.game = {
       // "direction" (set in setUpGame())
+      // "nextDirection" (set in setUpGame())
       // "score" (set in setUpGame())
       speed: 100,
       keyCodes: {
@@ -90,6 +91,7 @@ class SnakeGame {
 
     this.game.score = 0;
     this.game.direction = 'right';
+    this.game.nextDirection = 'right';
   }
 
   startGame() {
@@ -122,7 +124,7 @@ class SnakeGame {
     const validKeyPress = Object.keys(this.game.keyCodes).includes(keyCode.toString()); // Only allow (up|down|left|right)
 
     if(validKeyPress && this.validateDirectionChange(this.game.keyCodes[keyCode], this.game.direction)) {
-      this.game.direction = this.game.keyCodes[keyCode];
+      this.game.nextDirection = this.game.keyCodes[keyCode];
     }
   }
 
@@ -204,6 +206,8 @@ class SnakeGame {
       this.ctx.fillRect(coordinate.x, coordinate.y, size, size);
       this.ctx.strokeRect(coordinate.x, coordinate.y, size, size);
     });
+
+    this.game.direction = this.game.nextDirection;
   }
 
   generateFood() {
